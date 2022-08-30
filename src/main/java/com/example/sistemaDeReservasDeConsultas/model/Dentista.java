@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Dentista {
     private int id;
-    private String matriculaCadastro;
     private String nome;
     private String sobrenome;
+    private String matriculaCadastro;
 }
