@@ -35,7 +35,7 @@ public class PacienteDaoH2 implements IDao<Paciente> {
         String sqlInsert = String.format("INSERT INTO paciente (nome, sobrenome, endereco, rg, dataDeAlta) VALUES ('%s', '%s', '%s', '%s', '%s')", paciente.getNome(), paciente.getSobrenome(), paciente.getEndereco(), paciente.getRg(), paciente.getDataDeAlta());
 
         try{
-            log.info("Cadastrando novo paciente: " + paciente.getNome());
+            log.info("Cadastrando novo paciente: " + paciente.getNome() + " " + paciente.getSobrenome());
 
             connection = configuracaoJDBC.getConnection();
 
