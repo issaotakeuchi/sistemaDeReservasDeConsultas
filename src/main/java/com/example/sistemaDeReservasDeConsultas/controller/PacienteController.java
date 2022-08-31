@@ -23,8 +23,12 @@ public class PacienteController {
     }
 
     @GetMapping
-    public List<Paciente> buscarTodosPacientes() throws SQLException{
-        return service.buscarTodos();
+    public ResponseEntity<List<Paciente>> buscarTodosPacientes() throws SQLException {
+        ResponseEntity<List<Paciente>> re = null;
+        if(service.buscarTodos() == null) {
+            re = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return re;
     }
 
     @RequestMapping(value = "/buscaId")
