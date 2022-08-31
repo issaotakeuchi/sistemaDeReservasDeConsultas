@@ -132,7 +132,9 @@ public class PacienteDaoH2 implements IDao<Paciente> {
             log.info("Fechando conexão");
             st.close();
         }
-        return paciente != null ? Optional.of(paciente) : Optional.empty();
+        // @TODO: handle null return
+        if(paciente == null) { throw new RuntimeException("Paciente não encontrado");}
+        return paciente != null ? Optional.of(paciente) : null;
     }
 
     @Override
