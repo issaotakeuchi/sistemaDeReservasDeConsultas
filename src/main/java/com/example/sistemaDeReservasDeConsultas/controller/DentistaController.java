@@ -26,24 +26,25 @@ public class DentistaController {
     }
     @RequestMapping(value = "/buscaId")
     public Dentista buscarPorId(@RequestParam("id") int id) throws SQLException{
-        return dentistaService.buscarPorId(id).isEmpty() ? new Dentista() : dentistaService.buscarPorId(id).get();
+        Dentista dentista = dentistaService.buscarPorId(id).get();
+        return dentista == null ? new Dentista() : dentista;
     }
     @PutMapping
-    /*public void alterar(@RequestBody Dentista dentista) throws SQLException {
+    public void alterar(@RequestBody Dentista dentista) throws SQLException {
         System.out.println();
         dentistaService.alterar(dentista);
-    }*/
+    }/*
     public ResponseEntity<Dentista> alterar(@RequestBody Dentista dentista) throws SQLException{
         ResponseEntity responseEntity = null;
         if(dentistaService.buscarPorId(dentista.getId()) == null){
             responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return responseEntity;
-    }
-    @DeleteMapping
-    /*public void excluir(@RequestParam("id") int id) throws SQLException {
-        dentistaService.excluir(id);
     }*/
+    @DeleteMapping
+    public void excluir(@RequestParam("id") int id) throws SQLException {
+        dentistaService.excluir(id);
+    }/*
     public ResponseEntity<Dentista> excluir(@PathVariable Integer id) throws SQLException{
         ResponseEntity responseEntity = null;
         if (dentistaService.buscarPorId(id) == null){
@@ -52,5 +53,5 @@ public class DentistaController {
             responseEntity = new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return responseEntity;
-    }
+    }*/
 }
