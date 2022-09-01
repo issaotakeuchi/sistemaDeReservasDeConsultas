@@ -30,7 +30,7 @@ public class DentistaDAOH2 implements IDao<Dentista> {
 
         try {
             log.info("Salvando o dentista: " + dentista.getNome() + " " + dentista.getSobrenome());
-            configuracaoJDBC = new ConfiguracaoJDBC("org.h2.Driver", "jdbc:h2:~/sistemaDeReservasDeConsultas;" + "INIT=RUNSCRIPT FROM 'create.sql'","sa","");
+            configuracaoJDBC = new ConfiguracaoJDBC("org.h2.Driver", "jdbc:h2:~/clinica;INIT=RUNSCRIPT FROM 'create.sql'","sa","");
             connection = configuracaoJDBC.getConnection();
             Statement statement = connection.createStatement();
             statement.execute(sqlInsert, Statement.RETURN_GENERATED_KEYS);
@@ -57,7 +57,7 @@ public class DentistaDAOH2 implements IDao<Dentista> {
         List<Dentista> dentistas = new ArrayList<>();
 
         try {
-            configuracaoJDBC = new ConfiguracaoJDBC("org.h2.Driver", "jdbc:h2:~/sistemaDeReservasDeConsultas;" + "INIT=RUNSCRIPT FROM 'create.sql'","sa","");
+            configuracaoJDBC = new ConfiguracaoJDBC("org.h2.Driver", "jdbc:h2:~/clinica;INIT=RUNSCRIPT FROM 'create.sql'","sa","");
             connection = configuracaoJDBC.getConnection();
             statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
@@ -82,7 +82,7 @@ public class DentistaDAOH2 implements IDao<Dentista> {
 
         try {
             log.info("Alterando dados do dentista: " + dentista.getNome() + " " + dentista.getSobrenome() + " de id: " + dentista.getId());
-            configuracaoJDBC = new ConfiguracaoJDBC("org.h2.Driver", "jdbc:h2:~/sistemaDeReservasDeConsultas;" + "INIT=RUNSCRIPT FROM 'create.sql'","sa","");
+            configuracaoJDBC = new ConfiguracaoJDBC("org.h2.Driver", "jdbc:h2:~/clinica;INIT=RUNSCRIPT FROM 'create.sql'","sa","");
             connection = configuracaoJDBC.getConnection();
             Statement statement = connection.createStatement();
             statement.execute(sqlUpdate);
@@ -104,7 +104,7 @@ public class DentistaDAOH2 implements IDao<Dentista> {
         Dentista dentista = null;
 
         try {
-            configuracaoJDBC = new ConfiguracaoJDBC("org.h2.Driver", "jdbc:h2:~/sistemaDeReservasDeConsultas;" + "INIT=RUNSCRIPT FROM 'create.sql'","sa","");
+            configuracaoJDBC = new ConfiguracaoJDBC("org.h2.Driver", "jdbc:h2:~/clinica;INIT=RUNSCRIPT FROM 'create.sql'","sa","");
             connection = configuracaoJDBC.getConnection();
             log.info("Buscando dentista por id: " + id);
             statement = connection.createStatement();
@@ -119,7 +119,10 @@ public class DentistaDAOH2 implements IDao<Dentista> {
             log.info("Fechando a conexão com o banco de dados");
             statement.close();
         }
-        return dentista != null ? Optional.of(dentista) : Optional.empty();
+        //return dentista != null ? Optional.of(dentista) : Optional.empty();
+        // @TODO: handle null return
+        if(dentista == null) { throw new RuntimeException("Dentista de id: " + id + " não encontrado");}
+        return dentista != null ? Optional.of(dentista) : null;
     }
 
     @Override
@@ -130,7 +133,7 @@ public class DentistaDAOH2 implements IDao<Dentista> {
         String sqlDelete = String.format("DELETE FROM dentista WHERE id = '%s'", id);
 
         try {
-            configuracaoJDBC = new ConfiguracaoJDBC("org.h2.Driver", "jdbc:h2:~/sistemaDeReservasDeConsultas;" + "INIT=RUNSCRIPT FROM 'create.sql'","sa","");
+            configuracaoJDBC = new ConfiguracaoJDBC("org.h2.Driver", "jdbc:h2:~/clinica;INIT=RUNSCRIPT FROM 'create.sql'","sa","");
             connection = configuracaoJDBC.getConnection();
             log.info("Excluindo dentista com id: " + id);
             statement = connection.createStatement();
