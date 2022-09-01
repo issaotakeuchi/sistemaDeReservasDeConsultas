@@ -115,7 +115,7 @@ public class PacienteDaoH2 implements IDao<Paciente> {
         Paciente paciente = null;
 
         try{
-            log.info("Buscando paciente: " + id);
+            log.info("Buscando paciente de id: " + id);
 
             connection = configuracaoJDBC.getConnection();
 
@@ -127,13 +127,13 @@ public class PacienteDaoH2 implements IDao<Paciente> {
                 paciente = criarPaciente(rs);
             }
         }catch (SQLException e){
-            log.error("Erro ao buscar paciente: " + e.getMessage());
+            log.error("Erro ao buscar paciente de id: " + id + e.getMessage());
         } finally {
             log.info("Fechando conexão");
             st.close();
         }
         // @TODO: handle null return
-        if(paciente == null) { throw new RuntimeException("Paciente não encontrado");}
+        if(paciente == null) { throw new RuntimeException("Paciente de id: " + id + " não encontrado");}
         return paciente != null ? Optional.of(paciente) : null;
     }
 

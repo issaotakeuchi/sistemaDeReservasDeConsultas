@@ -23,13 +23,13 @@ public class DentistaDAOH2 implements IDao<Dentista> {
 
     @Override
     public Dentista salvar(Dentista dentista) throws SQLException {
-        log.info("abrindo conexao com banco");
+        log.info("Abrindo conexão com o banco de dados");
         String sqlInsert = String.format("INSERT INTO dentista (nome, sobrenome, matriculaCadastro)" +
                 "VALUES('%s', '%s', '%s')", dentista.getNome(), dentista.getSobrenome(), dentista.getMatriculaCadastro());
         Connection connection = null;
 
         try {
-            log.info("salvando o dentista: " + dentista.getNome() + " " + dentista.getSobrenome());
+            log.info("Salvando o dentista: " + dentista.getNome() + " " + dentista.getSobrenome());
             configuracaoJDBC = new ConfiguracaoJDBC("org.h2.Driver", "jdbc:h2:~/sistemaDeReservasDeConsultas;" + "INIT=RUNSCRIPT FROM 'create.sql'","sa","");
             connection = configuracaoJDBC.getConnection();
             Statement statement = connection.createStatement();
@@ -40,9 +40,9 @@ public class DentistaDAOH2 implements IDao<Dentista> {
             }
         } catch (Exception e){
             e.printStackTrace();
-            log.info("erro ao inserir o dentista: " + e.getMessage());
+            log.info("Erro ao cadastrar o dentista" + e.getMessage());
         } finally {
-            log.info("fechando a conexao");
+            log.info("Fechando a conexão com o banco de dados");
             connection.close();
         }
         return dentista;
@@ -50,7 +50,7 @@ public class DentistaDAOH2 implements IDao<Dentista> {
 
     @Override
     public List buscarTodos() throws SQLException {
-        log.info("abrindo conexao com banco");
+        log.info("Abrindo conexão com o banco de dados");
         Connection connection = null;
         Statement statement = null;
         String query = "SELECT * FROM dentista";
@@ -61,7 +61,7 @@ public class DentistaDAOH2 implements IDao<Dentista> {
             connection = configuracaoJDBC.getConnection();
             statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
-            log.info("buscando todos os dentistas do banco");
+            log.info("Buscando todos os dentistas cadastrados");
 
             while (resultSet.next()){
                 dentistas.add(criarObjetoDentista(resultSet));
@@ -69,7 +69,7 @@ public class DentistaDAOH2 implements IDao<Dentista> {
         } catch (SQLException throwables){
             throwables.printStackTrace();
         } finally {
-            log.info("fechando a conexao");
+            log.info("Fechando a conexão com o banco de dados");
             statement.close();
         }
         return dentistas;
@@ -81,23 +81,23 @@ public class DentistaDAOH2 implements IDao<Dentista> {
         Connection connection = null;
 
         try {
-            log.info("alterando dados do dentista: " + dentista.getNome() + " " + dentista.getSobrenome() + " de id: " + dentista.getId());
+            log.info("Alterando dados do dentista: " + dentista.getNome() + " " + dentista.getSobrenome() + " de id: " + dentista.getId());
             configuracaoJDBC = new ConfiguracaoJDBC("org.h2.Driver", "jdbc:h2:~/sistemaDeReservasDeConsultas;" + "INIT=RUNSCRIPT FROM 'create.sql'","sa","");
             connection = configuracaoJDBC.getConnection();
             Statement statement = connection.createStatement();
             statement.execute(sqlUpdate);
         } catch (Exception e){
             e.printStackTrace();
-            log.error("erro ao alterar o dentista " + e.getMessage());
+            log.error("Erro ao alterar o dentista " + e.getMessage());
         } finally {
-            log.info("fechando conexao");
+            log.info("Fechando a conexão com o banco de dados");
             connection.close();
         }
     }
 
     @Override
     public Optional<Dentista> buscarPorId(int id) throws SQLException {
-        log.info("abrindo conexao com banco");
+        log.info("Abrindo conexão com o banco de dados");
         Connection connection = null;
         Statement statement = null;
         String query = String.format("SELECT * FROM dentista WHERE id = '%s'", id);
@@ -106,7 +106,7 @@ public class DentistaDAOH2 implements IDao<Dentista> {
         try {
             configuracaoJDBC = new ConfiguracaoJDBC("org.h2.Driver", "jdbc:h2:~/sistemaDeReservasDeConsultas;" + "INIT=RUNSCRIPT FROM 'create.sql'","sa","");
             connection = configuracaoJDBC.getConnection();
-            log.info("buscando dentista por id: " + id);
+            log.info("Buscando dentista por id: " + id);
             statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
 
@@ -116,7 +116,7 @@ public class DentistaDAOH2 implements IDao<Dentista> {
         } catch (SQLException throwables){
             throwables.printStackTrace();
         } finally {
-            log.info("fechando conexao");
+            log.info("Fechando a conexão com o banco de dados");
             statement.close();
         }
         return dentista != null ? Optional.of(dentista) : Optional.empty();
@@ -124,7 +124,7 @@ public class DentistaDAOH2 implements IDao<Dentista> {
 
     @Override
     public void excluir(int id) throws SQLException {
-        log.info("abrindo conexao com banco");
+        log.info("Abrindo conexão com o banco de dados");
         Connection connection = null;
         Statement statement = null;
         String sqlDelete = String.format("DELETE FROM dentista WHERE id = '%s'", id);
@@ -132,13 +132,13 @@ public class DentistaDAOH2 implements IDao<Dentista> {
         try {
             configuracaoJDBC = new ConfiguracaoJDBC("org.h2.Driver", "jdbc:h2:~/sistemaDeReservasDeConsultas;" + "INIT=RUNSCRIPT FROM 'create.sql'","sa","");
             connection = configuracaoJDBC.getConnection();
-            log.info("excluindo dentista com id: " + id);
+            log.info("Excluindo dentista com id: " + id);
             statement = connection.createStatement();
             statement.execute(sqlDelete);
         } catch (SQLException throwables){
             throwables.printStackTrace();
         } finally {
-            log.info("fechando conexao");
+            log.info("Fechando a conexão com o banco de dados");
             connection.close();
         }
     }
