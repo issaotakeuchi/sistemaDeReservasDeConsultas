@@ -1,30 +1,21 @@
 package com.example.sistemaDeReservasDeConsultas.entity;
 
+import lombok.*;
+
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-
-@Getter
-@Setter
-@NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@Data
 @Entity
+@NoArgsConstructor
 public class DentistaEntity {
-
-    private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private int id;
     private String nome;
     private String sobrenome;
     private String matriculaCadastro;
-
-    public DentistaEntity(String nome, String sobrenome, String matriculaCadastro) {
-        this.nome = nome;
-        this.sobrenome = sobrenome;
-        this.matriculaCadastro = matriculaCadastro;
-    }
-
 }

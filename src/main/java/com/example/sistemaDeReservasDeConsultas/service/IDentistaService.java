@@ -6,9 +6,9 @@ import java.util.Optional;
 public interface IDentistaService <T> {
 
     public List<T> getAll();
-    public Optional<T> getById(Long id);
+    public Optional<T> getById(int id);
     public T add(T t);
     public void update(T t);
-    public void remove(Long id);
+    public void remove(int id);
     
 }
