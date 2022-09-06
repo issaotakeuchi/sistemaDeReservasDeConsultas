@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/paciente")
@@ -18,46 +19,46 @@ public class PacienteController {
     PacienteService service;
 
     @PostMapping
-    public Paciente cadastrarPaciente(@RequestBody Paciente paciente) throws SQLException{
+    public Paciente cadastrarPaciente(@RequestBody Paciente paciente) {
         return service.salvar(paciente);
     }
 
     @GetMapping
-    public List<Paciente> buscarTodosPacientes() throws SQLException{
+    public List<Paciente> buscarTodosPacientes() {
         return service.buscarTodos();
     }
 
-    @RequestMapping(value = "/buscaId")
-    public Paciente buscaPacienteId(@RequestParam("id") int id) throws SQLException{
-        return service.buscarPorId(id).isEmpty() ? new Paciente() : service.buscarPorId(id).get();
+    @GetMapping("/{id}")
+    public Optional<Paciente> buscaPacienteId(@PathVariable Integer id) {
+        return service.buscarPorId(id);
     }
 
-//    @PatchMapping
-//    public void alterarPaciente(@RequestBody Paciente paciente) throws SQLException{
-//        System.out.println();
-//        service.alterar(paciente);
-//    }
     @PutMapping
-    public ResponseEntity<Paciente> alterarPaciente(@RequestBody Paciente paciente) throws SQLException{
-        ResponseEntity re = null;
-        if(service.buscarPorId(paciente.getId()) == null){
-            re = new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return re;
+    public void alterarPaciente(@RequestBody Paciente paciente) {
+        System.out.println();
+        service.alterar(paciente);
     }
-
-//    @DeleteMapping
-//    public void excluirPaciente(@RequestParam("id") int id) throws SQLException{
-//        service.excluir(id);
+//    @PutMapping
+//    public ResponseEntity<Paciente> alterarPaciente(@RequestBody Paciente paciente) {
+//        ResponseEntity re = null;
+//        if(service.buscarPorId(paciente.getId()) == null){
+//            re = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//        return re;
 //    }
-    @DeleteMapping
-    public ResponseEntity<Paciente> excluir(@PathVariable Integer id) throws SQLException{
-        ResponseEntity re = null;
-        if (service.buscarPorId(id) == null){
-            re = new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            re = new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return re;
+
+    @DeleteMapping("/{id}")
+    public void excluirPaciente(@PathVariable Integer id) {
+        service.excluir(id);
     }
+//    @DeleteMapping
+//    public ResponseEntity<Paciente> excluir(@PathVariable Integer id) throws SQLException{
+//        ResponseEntity re = null;
+//        if (service.buscarPorId(id) == null){
+//            re = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        } else {
+//            re = new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        }
+//        return re;
+//    }
 }
