@@ -2,8 +2,6 @@ package com.example.sistemaDeReservasDeConsultas.entity;
 
 import java.sql.Date;
 
-import javax.persistence.Entity;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,17 +13,16 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Entity
-public class PacienteEntity {
+public class PacienteEntity extends BaseEntity {
 
-    private Long id;
     private String nome;
     private String sobrenome;
     private String endereco;
     private String rg;
     private Date dataDeAlta;
 
-    public PacienteEntity(String nome, String sobrenome, String endereco, String rg, Date dataDeAlta) {
+    public PacienteEntity(Long id, String nome, String sobrenome, String endereco, String rg, Date dataDeAlta) {
+        super.id = id;
         this.nome = nome;
         this.sobrenome = sobrenome;
         this.endereco = endereco;

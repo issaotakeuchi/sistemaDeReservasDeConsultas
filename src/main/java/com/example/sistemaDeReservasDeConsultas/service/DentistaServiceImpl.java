@@ -9,7 +9,7 @@ import com.example.sistemaDeReservasDeConsultas.entity.DentistaEntity;
 import com.example.sistemaDeReservasDeConsultas.repository.IDentistaRepository;
 
 @Service
-public class DentistaServiceImpl implements IDentistaService<DentistaEntity> {
+public class DentistaServiceImpl implements IService<DentistaEntity> {
 
     private final IDentistaRepository repository;
 
