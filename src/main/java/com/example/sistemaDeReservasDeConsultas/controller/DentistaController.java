@@ -4,7 +4,6 @@ import com.example.sistemaDeReservasDeConsultas.entity.DentistaEntity;
 import com.example.sistemaDeReservasDeConsultas.service.DentistaServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
