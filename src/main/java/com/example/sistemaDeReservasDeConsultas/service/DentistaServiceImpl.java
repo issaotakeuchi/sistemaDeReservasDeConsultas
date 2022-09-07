@@ -34,7 +34,8 @@ public class DentistaServiceImpl implements IDentistaService<DentistaEntity> {
     @Override
     public void remove(int id) {
         if (getById(id).isPresent()) { repository.deleteById(id); }
-        else { throw new IllegalStateException("Repositório nulo"); }
+        else {
+            throw new IllegalStateException("Repositório nulo"); }
     }
 
     @Override

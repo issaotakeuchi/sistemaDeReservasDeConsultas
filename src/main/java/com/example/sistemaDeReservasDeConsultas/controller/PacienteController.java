@@ -3,7 +3,6 @@ import com.example.sistemaDeReservasDeConsultas.service.PacienteServiceImpl;
 import com.example.sistemaDeReservasDeConsultas.entity.PacienteEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +20,7 @@ public class PacienteController {
     }
 
     @GetMapping
-    public List<PacienteEntity> buscarTodos() throws SQLException{
+    public List<PacienteEntity> buscarTodos() {
         return service.getAll();
     }
 
@@ -30,7 +29,7 @@ public class PacienteController {
         return service.getById(id);
     }
 
-    @PutMapping
+    @PutMapping("/atualizar")
     public void alterarPaciente(@RequestBody PacienteEntity paciente) {
         service.update(paciente);
     }
