@@ -5,41 +5,41 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.example.sistemaDeReservasDeConsultas.entity.DentistaEntity;
+import com.example.sistemaDeReservasDeConsultas.model.Dentista;
 import com.example.sistemaDeReservasDeConsultas.repository.IDentistaRepository;
 
 @Service
-public class DentistaServiceImpl implements IDentistaService<DentistaEntity> {
+public class DentistaServiceImpl implements IService<Dentista> {
 
     private final IDentistaRepository repository;
 
     public DentistaServiceImpl(IDentistaRepository repository) { this.repository = repository; }
 
     @Override
-    public DentistaEntity add(DentistaEntity dentista) {
+    public Dentista add(Dentista dentista) {
         if ( dentista != null) { return repository.save(dentista); }
-        return new DentistaEntity();
+        return new Dentista();
     }
 
     @Override
-    public List<DentistaEntity> getAll() {
+    public List<Dentista> getAll() {
         return repository.findAll();
     }
 
     @Override
-    public Optional<DentistaEntity> getById(int id) {
+    public Optional<Dentista> getById(Long id) {
         return repository.findById(id);
     }
 
     @Override
-    public void remove(int id) {
+    public void remove(Long id) {
         if (getById(id).isPresent()) { repository.deleteById(id); }
         else {
             throw new IllegalStateException("Repositório nulo"); }
     }
 
     @Override
-    public void update(DentistaEntity dentista) {
+    public void update(Dentista dentista) {
         if (dentista == null) { throw new IllegalStateException("Dentista nulo"); }
         else if (dentista != null && repository.findById(dentista.getId()).isPresent()) {
             repository.saveAndFlush(dentista);
