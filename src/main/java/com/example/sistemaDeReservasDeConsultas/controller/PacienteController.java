@@ -1,13 +1,14 @@
 package com.example.sistemaDeReservasDeConsultas.controller;
+import com.example.sistemaDeReservasDeConsultas.model.Paciente;
 import com.example.sistemaDeReservasDeConsultas.service.PacienteServiceImpl;
-import com.example.sistemaDeReservasDeConsultas.entity.PacienteEntity;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/paciente")
+@RequestMapping("/pacientes")
 public class PacienteController {
 
     private final PacienteServiceImpl service;
@@ -15,22 +16,22 @@ public class PacienteController {
     public PacienteController(PacienteServiceImpl service) { this.service = service; }
 
     @PostMapping
-    public PacienteEntity cadastrarPaciente(@RequestBody PacienteEntity paciente) {
+    public Paciente cadastrarPaciente(@RequestBody Paciente paciente) {
         return service.add(paciente);
     }
 
     @GetMapping
-    public List<PacienteEntity> buscarTodos() {
+    public List<Paciente> buscarTodos() {
         return service.getAll();
     }
 
     @GetMapping("/{id}")
-    public Optional<PacienteEntity> buscaPacienteId(@PathVariable Long id) {
+    public Optional<Paciente> buscaPacienteId(@PathVariable Long id) {
         return service.getById(id);
     }
 
     @PutMapping("/atualizar")
-    public void alterarPaciente(@RequestBody PacienteEntity paciente) {
+    public void alterarPaciente(@RequestBody Paciente paciente) {
         service.update(paciente);
     }
 
