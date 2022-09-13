@@ -12,7 +12,7 @@ import lombok.Setter;
 public abstract class BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected @Getter @Setter Long id;
     
 }
