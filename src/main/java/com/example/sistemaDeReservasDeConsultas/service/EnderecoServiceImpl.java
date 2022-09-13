@@ -9,7 +9,7 @@ import com.example.sistemaDeReservasDeConsultas.model.Endereco;
 import com.example.sistemaDeReservasDeConsultas.repository.IEnderecoRepository;
 
 @Service
-public class EnderecoServiceImpl implements IService<Endereco> {
+public class EnderecoServiceImpl implements IEnderecoService {
 
     private final IEnderecoRepository repository;
 

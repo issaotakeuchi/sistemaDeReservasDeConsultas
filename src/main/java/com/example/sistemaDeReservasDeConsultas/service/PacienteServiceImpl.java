@@ -9,7 +9,7 @@ import com.example.sistemaDeReservasDeConsultas.model.Paciente;
 import com.example.sistemaDeReservasDeConsultas.repository.IPacienteRepository;
 
 @Service
-public class PacienteServiceImpl implements IService<Paciente> {
+public class PacienteServiceImpl implements IPacienteService {
 
     private final IPacienteRepository repository;
 
