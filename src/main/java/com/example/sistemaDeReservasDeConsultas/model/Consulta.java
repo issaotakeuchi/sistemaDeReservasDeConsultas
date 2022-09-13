@@ -1,5 +1,6 @@
 package com.example.sistemaDeReservasDeConsultas.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,6 @@ public class Consulta {
     @ManyToOne
     @JoinColumn(name = "dentista_id")
     private Dentista dentista;
-    @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm", timezone =  "Brazil/East")
     private Date dataEHoraConsulta;
 }
