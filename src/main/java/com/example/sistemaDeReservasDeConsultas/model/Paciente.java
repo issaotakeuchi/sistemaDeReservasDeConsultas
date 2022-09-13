@@ -24,7 +24,7 @@ import lombok.ToString;
 public class Paciente {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private @Getter @Setter Long id;
     private @Getter @Setter String nome;
     private @Getter @Setter String sobrenome;
