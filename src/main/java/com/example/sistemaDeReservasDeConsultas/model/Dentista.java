@@ -20,7 +20,7 @@ import lombok.ToString;
 @ToString
 public class Dentista {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private @Getter @Setter Long id;
     private String nome;
     private String sobrenome;
