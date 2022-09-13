@@ -18,7 +18,7 @@ import lombok.ToString;
 public class Endereco {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private @Getter @Setter Long id;
     private @Getter @Setter String rua;
     private @Getter @Setter String numero;
