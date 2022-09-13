@@ -4,38 +4,24 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
-@Entity
+@NoArgsConstructor @Data
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@Entity @Table(name = "enderecos")
 public class Endereco {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private @Getter @Setter Long id;
-    private @Getter @Setter String rua;
-    private @Getter @Setter String numero;
-    private @Getter @Setter String bairro;
-    private @Getter @Setter String cidade;
-    private @Getter @Setter String uf;
-    private @Getter @Setter String pais;
-
-    public Endereco(String rua, String numero, String bairro, String cidade, String uf, String pais) {
-        this.rua = rua;
-        this.numero = numero;
-        this.bairro = bairro;
-        this.cidade = cidade;
-        this.uf = uf;
-        this.pais = pais;
-    }
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String rua;
+    private String numero;
+    private String bairro;
+    private String cidade;
+    private String uf;
+    private String pais;
 
 }

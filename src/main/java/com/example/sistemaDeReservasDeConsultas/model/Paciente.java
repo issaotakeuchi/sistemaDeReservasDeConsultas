@@ -8,39 +8,26 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.FetchType;
 import javax.persistence.CascadeType;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
-@Entity
+@NoArgsConstructor @Data
+@Entity @Table(name = "pacientes")
 public class Paciente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private @Getter @Setter Long id;
-    private @Getter @Setter String nome;
-    private @Getter @Setter String sobrenome;
+    private Long id;
+    private String nome;
+    private String sobrenome;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "endereco_id")
-    private @Getter @Setter Endereco endereco;
-    private @Getter @Setter String rg;
-    private @Getter @Setter Date dataDeAlta;
-
-    public Paciente(String nome, String sobrenome, String rg, Date dataDeAlta) {
-        this.nome = nome;
-        this.sobrenome = sobrenome;
-        this.rg = rg;
-        this.dataDeAlta = dataDeAlta;
-    }
-
+    private Endereco endereco;
+    private String rg;
+    private Date dataDeAlta;
     
 }
