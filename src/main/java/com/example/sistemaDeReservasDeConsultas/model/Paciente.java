@@ -11,6 +11,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.FetchType;
 import javax.persistence.CascadeType;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,7 +35,7 @@ public class Paciente {
     private @Getter @Setter String rg;
     private @Getter @Setter Date dataDeAlta;
 
-    public Paciente(String nome, String sobrenome, Endereco endereco, String rg, Date dataDeAlta) {
+    public Paciente(String nome, String sobrenome, String rg, Date dataDeAlta) {
         this.nome = nome;
         this.sobrenome = sobrenome;
         this.rg = rg;
