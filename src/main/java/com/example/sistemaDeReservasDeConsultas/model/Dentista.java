@@ -1,13 +1,13 @@
 package com.example.sistemaDeReservasDeConsultas.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor @Data
 @Entity @Table(name = "dentistas")
@@ -17,4 +17,8 @@ public class Dentista {
     private String nome;
     private String sobrenome;
     private String matriculaCadastro;
+
+    @OneToMany(mappedBy = "dentista", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Consulta> consultas = new ArrayList<>();
 }

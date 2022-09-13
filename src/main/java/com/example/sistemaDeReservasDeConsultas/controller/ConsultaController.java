@@ -1,6 +1,6 @@
 package com.example.sistemaDeReservasDeConsultas.controller;
 
-import com.example.sistemaDeReservasDeConsultas.entity.ConsultaModel;
+import com.example.sistemaDeReservasDeConsultas.model.Consulta;
 import com.example.sistemaDeReservasDeConsultas.service.ConsultaServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
@@ -8,36 +8,37 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/consultas")
 public class ConsultaController {
-    private final ConsultaServiceImpl consultaService;
+    private final ConsultaServiceImpl service;
 
-    public ConsultaController(ConsultaServiceImpl consultaService) {
-        this.consultaService = consultaService;
+    public ConsultaController(ConsultaServiceImpl service) {
+        this.service = service;
     }
 
-    @PostMapping("/consultas/adicionar")
-    public ConsultaModel salvarConsulta(@RequestBody ConsultaModel consultaModel){
-        return consultaService.add(consultaModel);
+    @PostMapping
+    public Consulta cadastrarConsulta(@RequestBody Consulta consulta){
+        return service.add(consulta);
     }
 
-    @RequestMapping(value = "/consultas", method = RequestMethod.GET, produces = "application/json")
-    public List<ConsultaModel> buscarTodos() {
-        return consultaService.getAll();
+    @RequestMapping
+    public List<Consulta> buscarTodos() {
+        return service.getAll();
     }
 
-    @GetMapping("/consultas/{id}")
-    public Optional<ConsultaModel> buscarPorId(@PathVariable Long id) {
-        return consultaService.getById(id);
+    @GetMapping("/{id}")
+    public Optional<Consulta> buscarConsultaId(@PathVariable Long id) {
+        return service.getById(id);
     }
 
-    @PutMapping("/consultas/atualizar")
-    public void atualizarConsulta(@RequestBody ConsultaModel consulta) {
-        consultaService.update(consulta);
+    @PutMapping("atualizar")
+    public void alterarConsulta(@RequestBody Consulta consulta) {
+        service.update(consulta);
     }
 
-    @DeleteMapping("/consultas/delete/{id}")
-    public void excluir(@PathVariable Long id) {
-        consultaService.remove(id);
+    @DeleteMapping("/{id}")
+    public void excluirConsulta(@PathVariable Long id) {
+        service.remove(id);
     }
 
 }
