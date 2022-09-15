@@ -1,7 +1,9 @@
 package com.example.sistemaDeReservasDeConsultas.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.sistemaDeReservasDeConsultas.model.Endereco;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
 
-public interface IEnderecoRepository extends JpaRepository<Endereco, Long> { }
+@Repository
+public interface IEnderecoRepository extends MongoRepository<Endereco, Long> { }

@@ -43,7 +43,7 @@ public class PacienteServiceImpl implements IService<Paciente> {
         if (paciente == null) { throw new IllegalStateException("Paciente nulo"); }
         Long id = paciente.getId();
         if (getById(id) == null) { throw new IllegalStateException("Paciente nulo"); }
-        repository.saveAndFlush(paciente);
+        repository.save(paciente);
     }
     
 }

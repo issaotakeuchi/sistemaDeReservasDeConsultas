@@ -42,7 +42,7 @@ public class DentistaServiceImpl implements IService<Dentista> {
     public void update(Dentista dentista) {
         if (dentista == null) { throw new IllegalStateException("Dentista nulo"); }
         else if (dentista != null && repository.findById(dentista.getId()).isPresent()) {
-            repository.saveAndFlush(dentista);
+            repository.save(dentista);
         }
     }
     

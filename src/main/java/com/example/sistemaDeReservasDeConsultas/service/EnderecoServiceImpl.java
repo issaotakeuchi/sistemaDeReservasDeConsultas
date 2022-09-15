@@ -49,7 +49,7 @@ public class EnderecoServiceImpl implements IService<Endereco> {
         if (endereco == null) {
             throw new IllegalStateException("Endereço nulo");
         } else if (endereco != null && repository.findById(endereco.getId()).isPresent()) {
-            repository.saveAndFlush(endereco);
+            repository.save(endereco);
         }
     }
 

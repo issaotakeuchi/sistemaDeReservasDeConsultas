@@ -1,7 +1,9 @@
 package com.example.sistemaDeReservasDeConsultas.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.sistemaDeReservasDeConsultas.model.Dentista;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
 
-public interface IDentistaRepository extends JpaRepository<Dentista, Long> { }
+@Repository
+public interface IDentistaRepository extends MongoRepository<Dentista, Long> { }

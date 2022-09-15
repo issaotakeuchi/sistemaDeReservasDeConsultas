@@ -42,7 +42,7 @@ public class ConsultaServiceImpl implements IService<Consulta> {
     public void update(Consulta consulta) {
         if (consulta == null) { throw new IllegalStateException("Consulta nulo"); }
         else if (consulta != null && repository.findById(consulta.getId()).isPresent()) {
-            repository.saveAndFlush(consulta);
+            repository.save(consulta);
         }
     }
 
