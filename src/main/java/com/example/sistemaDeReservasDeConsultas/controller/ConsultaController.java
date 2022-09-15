@@ -27,7 +27,7 @@ public class ConsultaController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Consulta> buscarConsultaId(@PathVariable Long id) {
+    public  Optional<Consulta> buscarConsultaId(@PathVariable Long id) {
         return service.getById(id);
     }
 
