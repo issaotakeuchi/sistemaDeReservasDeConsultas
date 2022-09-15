@@ -9,15 +9,14 @@ import com.example.sistemaDeReservasDeConsultas.model.Endereco;
 import com.example.sistemaDeReservasDeConsultas.repository.IEnderecoRepository;
 
 @Service
-public class EnderecoServiceImpl implements IService<Endereco> {
+public class EnderecoService {
 
     private final IEnderecoRepository repository;
 
-    public EnderecoServiceImpl(IEnderecoRepository repository) {
+    public EnderecoService(IEnderecoRepository repository) {
         this.repository = repository;
     }
 
-    @Override
     public Endereco add(Endereco endereco) {
         if (endereco != null) {
             return repository.save(endereco);
@@ -25,17 +24,14 @@ public class EnderecoServiceImpl implements IService<Endereco> {
         return new Endereco();
     }
 
-    @Override
     public List<Endereco> getAll() {
         return repository.findAll();
     }
 
-    @Override
     public Optional<Endereco> getById(Long id) {
         return repository.findById(id);
     }
 
-    @Override
     public void remove(Long id) {
         if (getById(id).isPresent()) {
             repository.deleteById(id);
@@ -44,7 +40,6 @@ public class EnderecoServiceImpl implements IService<Endereco> {
         }
     }
 
-    @Override
     public void update(Endereco endereco) {
         if (endereco == null) {
             throw new IllegalStateException("Endereço nulo");

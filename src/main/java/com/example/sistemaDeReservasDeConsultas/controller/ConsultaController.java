@@ -1,7 +1,7 @@
 package com.example.sistemaDeReservasDeConsultas.controller;
 
 import com.example.sistemaDeReservasDeConsultas.model.Consulta;
-import com.example.sistemaDeReservasDeConsultas.service.ConsultaServiceImpl;
+import com.example.sistemaDeReservasDeConsultas.service.ConsultaService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,9 +10,9 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/consultas")
 public class ConsultaController {
-    private final ConsultaServiceImpl service;
+    private final ConsultaService service;
 
-    public ConsultaController(ConsultaServiceImpl service) {
+    public ConsultaController(ConsultaService service) {
         this.service = service;
     }
 

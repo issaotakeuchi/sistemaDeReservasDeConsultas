@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -17,14 +17,19 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document(collection = "pacientes")
 public class Paciente {
 
-    @Id
     private Long id;
     private String nome;
     private String sobrenome;
     @Field(name = "endereco")
     private Endereco endereco;
     private String rg;
-    private String dataDeAlta;
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private Date dataDeAlta;
+    @Field(name = "consultas")
     private List<Consulta> consultas = new ArrayList<>();
+
+    public void addConsultaPaciente(Consulta consulta){
+        consultas.add(consulta);
+    }
     
 }

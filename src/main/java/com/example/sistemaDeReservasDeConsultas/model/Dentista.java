@@ -1,7 +1,5 @@
 package com.example.sistemaDeReservasDeConsultas.model;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -15,10 +13,15 @@ import java.util.List;
 @Data
 @Document(collection = "dentistas")
 public class Dentista {
-    @Id
+
     private Long id;
     private String nome;
     private String sobrenome;
     private String matriculaCadastro;
+    @Field(name = "consultas")
     private List<Consulta> consultas = new ArrayList<>();
+
+    public void addConsultaDentista(Consulta consulta){
+        consultas.add(consulta);
+    }
 }

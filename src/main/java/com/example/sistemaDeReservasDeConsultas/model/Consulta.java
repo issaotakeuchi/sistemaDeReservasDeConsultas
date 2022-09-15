@@ -6,8 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -17,11 +15,8 @@ import java.util.Date;
 @Document(collection = "consultas")
 public class Consulta {
 
-    @Id
     private Long id;
-    @Field(name = "paciente")
     private Paciente paciente;
-    @Field(name = "dentista")
     private Dentista dentista;
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm", timezone =  "Brazil/East")
     private Date dataEHoraConsulta;

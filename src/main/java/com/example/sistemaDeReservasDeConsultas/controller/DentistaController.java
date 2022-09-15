@@ -1,6 +1,6 @@
 package com.example.sistemaDeReservasDeConsultas.controller;
 import com.example.sistemaDeReservasDeConsultas.model.Dentista;
-import com.example.sistemaDeReservasDeConsultas.service.DentistaServiceImpl;
+import com.example.sistemaDeReservasDeConsultas.service.DentistaService;
 
 import org.springframework.web.bind.annotation.*;
 
@@ -11,9 +11,9 @@ import java.util.Optional;
 @RequestMapping("/dentistas")
 public class DentistaController {
 
-    private final DentistaServiceImpl service;
+    private final DentistaService service;
 
-    public DentistaController(DentistaServiceImpl service) { this.service = service; }
+    public DentistaController(DentistaService service) { this.service = service; }
 
     @PostMapping
     public Dentista cadastrarDentista(@RequestBody Dentista dentista) {
