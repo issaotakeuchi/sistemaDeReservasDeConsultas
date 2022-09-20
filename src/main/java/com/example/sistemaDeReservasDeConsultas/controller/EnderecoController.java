@@ -1,19 +1,18 @@
 package com.example.sistemaDeReservasDeConsultas.controller;
 import com.example.sistemaDeReservasDeConsultas.model.Endereco;
-import com.example.sistemaDeReservasDeConsultas.service.EnderecoServiceImpl;
+import com.example.sistemaDeReservasDeConsultas.service.EnderecoService;
 
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/enderecos")
 public class EnderecoController {
 
-    private final EnderecoServiceImpl service;
+    private final EnderecoService service;
 
-    public EnderecoController(EnderecoServiceImpl service) { this.service = service; }
+    public EnderecoController(EnderecoService service) { this.service = service; }
 
     @PostMapping
     public Endereco cadastrarEndereco(@RequestBody Endereco endereco) {

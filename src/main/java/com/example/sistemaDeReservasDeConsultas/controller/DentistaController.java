@@ -2,22 +2,21 @@ package com.example.sistemaDeReservasDeConsultas.controller;
 import com.example.sistemaDeReservasDeConsultas.exceptions.BadRequestException;
 import com.example.sistemaDeReservasDeConsultas.exceptions.ResourceNotFoundException;
 import com.example.sistemaDeReservasDeConsultas.model.Dentista;
-import com.example.sistemaDeReservasDeConsultas.service.DentistaServiceImpl;
+import com.example.sistemaDeReservasDeConsultas.service.DentistaService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/dentistas")
 public class DentistaController {
 
-    private final DentistaServiceImpl service;
+    private final DentistaService service;
 
-    public DentistaController(DentistaServiceImpl service) { this.service = service; }
+    public DentistaController(DentistaService service) { this.service = service; }
 
     @PostMapping
     public ResponseEntity<Dentista> cadastrarDentista(@RequestBody Dentista dentista) throws BadRequestException {

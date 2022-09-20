@@ -3,7 +3,7 @@ package com.example.sistemaDeReservasDeConsultas.controller;
 import com.example.sistemaDeReservasDeConsultas.exceptions.BadRequestException;
 import com.example.sistemaDeReservasDeConsultas.exceptions.ResourceNotFoundException;
 import com.example.sistemaDeReservasDeConsultas.model.Consulta;
-import com.example.sistemaDeReservasDeConsultas.service.ConsultaServiceImpl;
+import com.example.sistemaDeReservasDeConsultas.service.ConsultaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,9 +13,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/consultas")
 public class ConsultaController {
-    private final ConsultaServiceImpl service;
+    private final ConsultaService service;
 
-    public ConsultaController(ConsultaServiceImpl service) {
+    public ConsultaController(ConsultaService service) {
         this.service = service;
     }
 
