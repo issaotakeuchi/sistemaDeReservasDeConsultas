@@ -17,8 +17,7 @@ public class DentistaServiceImpl implements IService<Dentista> {
 
     @Override
     public Dentista add(Dentista dentista) {
-        if ( dentista != null) { return repository.save(dentista); }
-        return new Dentista();
+        return repository.save(dentista);
     }
 
     @Override
@@ -27,23 +26,17 @@ public class DentistaServiceImpl implements IService<Dentista> {
     }
 
     @Override
-    public Optional<Dentista> getById(Long id) {
-        return repository.findById(id);
+    public Dentista getById(Long id) {
+        return repository.findById(id).get();
     }
 
     @Override
     public void remove(Long id) {
-        if (getById(id).isPresent()) { repository.deleteById(id); }
-        else {
-            throw new IllegalStateException("Repositório nulo"); }
+        repository.deleteById(id);
     }
 
     @Override
-    public void update(Dentista dentista) {
-        if (dentista == null) { throw new IllegalStateException("Dentista nulo"); }
-        else if (dentista != null && repository.findById(dentista.getId()).isPresent()) {
-            repository.saveAndFlush(dentista);
-        }
+    public Dentista update(Dentista dentista) {
+        return repository.saveAndFlush(dentista);
     }
-    
 }

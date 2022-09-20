@@ -1,7 +1,11 @@
 package com.example.sistemaDeReservasDeConsultas.controller;
+import com.example.sistemaDeReservasDeConsultas.exceptions.BadRequestException;
+import com.example.sistemaDeReservasDeConsultas.exceptions.ResourceNotFoundException;
 import com.example.sistemaDeReservasDeConsultas.model.Dentista;
 import com.example.sistemaDeReservasDeConsultas.service.DentistaServiceImpl;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,8 +20,12 @@ public class DentistaController {
     public DentistaController(DentistaServiceImpl service) { this.service = service; }
 
     @PostMapping
-    public Dentista cadastrarDentista(@RequestBody Dentista dentista) {
-        return service.add(dentista);
+    public ResponseEntity<Dentista> cadastrarDentista(@RequestBody Dentista dentista) throws BadRequestException {
+        try {
+            return ResponseEntity.ok(service.add(dentista));
+        } catch (Exception e) {
+            throw new BadRequestException("Os dados da solicitação não correspondem aos necessários para o cadastro.");
+        }
     }
 
     @GetMapping
@@ -26,17 +34,35 @@ public class DentistaController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Dentista> buscaDentistaId(@PathVariable Long id) {
-        return service.getById(id);
+    public ResponseEntity<Dentista> buscaDentistaId(@PathVariable Long id) throws ResourceNotFoundException {
+        try {
+            return ResponseEntity.ok(service.getById(id));
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Não foi encontrado o dentista buscado com id: " + id);
+        }
     }
 
     @PutMapping("/atualizar")
-    public void alterarDentista(@RequestBody Dentista dentista) {
-        service.update(dentista);
+    public ResponseEntity<Dentista> alterarDentista(@RequestBody Dentista dentista) throws BadRequestException {
+        try {
+            return ResponseEntity.ok(service.update(dentista));
+        } catch (Exception e) {
+            throw new BadRequestException("Não foi possível atualizar os dados do dentista com os dados desta requisição");
+        }
     }
 
     @DeleteMapping("/{id}")
-    public void excluirDentista(@PathVariable Long id) {
-        service.remove(id);
+    public ResponseEntity excluirDentista(@PathVariable Long id) throws ResourceNotFoundException {
+        try {
+            ResponseEntity.ok(service.getById(id));
+            return ResponseEntity.ok("Dentista excluído.");
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Não foi possível excluir o dentista de id: " + id);
+        }
+    }
+
+    @ExceptionHandler({BadRequestException.class})
+    public ResponseEntity<String> processErrorBadRequest(BadRequestException ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 }

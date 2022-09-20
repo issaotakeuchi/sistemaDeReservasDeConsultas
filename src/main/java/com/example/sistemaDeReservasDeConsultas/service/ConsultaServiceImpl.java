@@ -17,8 +17,7 @@ public class ConsultaServiceImpl implements IService<Consulta> {
 
     @Override
     public Consulta add(Consulta consulta) {
-        if (consulta != null) { return repository.save(consulta); }
-        return new Consulta();
+        return repository.save(consulta);
     }
 
     @Override
@@ -27,26 +26,19 @@ public class ConsultaServiceImpl implements IService<Consulta> {
     }
 
     @Override
-    public Optional<Consulta> getById(Long id) {
-        return repository.findById(id);
+    public Consulta getById(Long id) {
+        return repository.findById(id).get();
     }
 
     @Override
     public void remove(Long id) {
-        if (getById(id).isPresent()) { repository.deleteById(id); }
-        else {
-            throw new IllegalStateException("Repositório nulo"); }
+        repository.deleteById(id);
     }
 
     @Override
-    public void update(Consulta consulta) {
-        if (consulta == null) { throw new IllegalStateException("Consulta nulo"); }
-        else if (consulta != null && repository.findById(consulta.getId()).isPresent()) {
-            repository.saveAndFlush(consulta);
-        }
+    public Consulta update(Consulta consulta) {
+        return repository.saveAndFlush(consulta);
     }
-
-
 }
 
 

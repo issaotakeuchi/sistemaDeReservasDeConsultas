@@ -26,7 +26,7 @@ public class EnderecoController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Endereco> buscaEnderecoId(@PathVariable Long id) {
+    public Endereco buscaEnderecoId(@PathVariable Long id) {
         return service.getById(id);
     }
 
