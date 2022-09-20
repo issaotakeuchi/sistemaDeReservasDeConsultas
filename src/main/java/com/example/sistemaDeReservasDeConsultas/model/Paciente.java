@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,7 @@ public class Paciente {
     @JoinColumn(name = "endereco_id")
     private Endereco endereco;
     private String rg;
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date dataDeAlta;
 
     @OneToMany(mappedBy = "paciente", fetch = FetchType.LAZY)
