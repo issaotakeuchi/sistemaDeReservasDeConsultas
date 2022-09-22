@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class DataLoader implements ApplicationRunner {
-
     private UsuarioRepository repository;
 
     public DataLoader(UsuarioRepository repository) {
