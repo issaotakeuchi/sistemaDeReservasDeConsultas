@@ -12,9 +12,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 @Configuration
-@EnableWebSecurity
+//@EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-
     @Autowired
     private UsuarioService service;
     @Autowired
@@ -22,21 +21,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception{
-        http.csrf().disable().authorizeRequests()
+        http
+                .httpBasic()
+                .and()
+                .authorizeRequests()
                 .antMatchers("/consultas/**").hasAnyAuthority(UsuarioRoles.ROLE_ADMIN.name(), UsuarioRoles.ROLE_USER.name())
                 .antMatchers("/dentistas/**", "/pacientes/**").hasAnyAuthority(UsuarioRoles.ROLE_ADMIN.name())
-                .anyRequest().authenticated().and().formLogin().permitAll();
+                .anyRequest().authenticated()
+                .and().csrf().disable();
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception{
-        auth.authenticationProvider(daoAuthenticationProvider());
-    }
-    @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider(){
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(encoder.encoder());
-        provider.setUserDetailsService(service);
-        return provider;
+        auth.userDetailsService(service)
+                .passwordEncoder(encoder.encoder());
     }
 }
