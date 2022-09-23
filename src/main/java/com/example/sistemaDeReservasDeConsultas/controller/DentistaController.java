@@ -54,6 +54,7 @@ public class DentistaController {
     public ResponseEntity excluirDentista(@PathVariable Long id) throws ResourceNotFoundException {
         try {
             ResponseEntity.ok(service.getById(id));
+            service.remove(id);
             return ResponseEntity.ok("Dentista excluído.");
         } catch (Exception e) {
             throw new ResourceNotFoundException("Não foi possível excluir o dentista de id: " + id);
