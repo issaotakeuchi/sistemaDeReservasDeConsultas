@@ -64,7 +64,6 @@ public class DentistaController {
     @DeleteMapping("/{id}")
     public ResponseEntity excluirDentista(@PathVariable Long id) throws ResourceNotFoundException {
         try {
-            ResponseEntity.ok(service.getById(id));
             service.remove(id);
             log.info("O dentista de id: " + id + " foi localizado no banco de dados e removido com sucesso.");
             return ResponseEntity.ok("Dentista excluído.");

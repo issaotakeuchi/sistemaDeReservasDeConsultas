@@ -66,7 +66,6 @@ public class ConsultaController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> excluirConsulta(@PathVariable Long id) throws ResourceNotFoundException {
         try {
-            ResponseEntity.ok(service.getById(id));
             service.remove(id);
             log.info("A consulta de id: " + id + " foi localizada no banco de dados e removida com sucesso.");
             return ResponseEntity.ok("Consulta excluída.");
