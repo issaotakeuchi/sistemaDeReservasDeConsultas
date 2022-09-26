@@ -1,115 +1,71 @@
-package com.example.sistemaDeReservasDeConsultas;
-
-import com.example.sistemaDeReservasDeConsultas.model.Endereco;
+package com.example.sistemaDeReservasDeConsultas.controller;
+import com.example.sistemaDeReservasDeConsultas.exceptions.BadRequestException;
+import com.example.sistemaDeReservasDeConsultas.exceptions.ResourceNotFoundException;
 import com.example.sistemaDeReservasDeConsultas.model.Paciente;
 import com.example.sistemaDeReservasDeConsultas.service.PacienteService;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.google.gson.Gson;
-import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import java.util.List;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@AutoConfigureMockMvc(addFilters = false)
+@RestController
+@RequestMapping(value = "/pacientes", method = RequestMethod.GET,
+        produces = {MediaType.APPLICATION_JSON_VALUE}
+)
 
-//@WebMvcTest(PacienteController.class)
+public class PacienteController {
 
-class SistemaDeReservasDeConsultasApplicationTests {
+    private final PacienteService service;
 
-	@Autowired
-	private MockMvc mockMvc;
+    public PacienteController(PacienteService service) { this.service = service; }
 
-	@MockBean
-	private PacienteService service;
+    @PostMapping
+    public ResponseEntity<Paciente> cadastrarPaciente(@RequestBody Paciente paciente) throws BadRequestException {
+        try {
+            return ResponseEntity.ok(service.add(paciente));
+        } catch (Exception e) {
+            throw new BadRequestException("Os dados da solicitação não correspondem aos necessários para o cadastro.");
+        }
+    }
 
-	@JsonFormat(pattern = "dd/MM/yyyy")
+    @GetMapping
+    public List<Paciente> buscarTodos() {
+        return service.getAll();
+    }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Paciente> buscaPacienteId(@PathVariable Long id) throws ResourceNotFoundException {
+        try {
+            return ResponseEntity.ok(service.getById(id));
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Não foi encontrado o paciente buscado com id: " + id);
+        }
+    }
 
-	@Test
-	public void cadastrarPaciente () throws Exception {
+    @PutMapping("/atualizar")
+    public ResponseEntity<Paciente> alterarPaciente(@RequestBody Paciente paciente) throws BadRequestException {
+        try {
+            return ResponseEntity.ok(service.update(paciente));
+        } catch (Exception e) {
+            throw new BadRequestException("Não foi possível atualizar os dados do paciente com os dados desta requisição");
+        }
+    }
 
-			String nome = "Daniel";
-			String sobrenome = "Fontoura";
-			Endereco endereco1 = new Endereco();
-			String rg = "123456789-0";
-			Date dataDeAlta = Date.valueOf("2022-11-11");
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> excluirPaciente(@PathVariable Long id) throws ResourceNotFoundException {
+        try {
+            service.remove(id);
+            return ResponseEntity.ok("Paciente excluído.");
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Não foi possível excluir o paciente de id: " + id);
+        }
+    }
 
-			Paciente paciente1 = new Paciente() {
-
-				@Override
-				public String getNome() {
-					return nome;
-				}
-
-				@Override
-				public String getSobrenome() {
-					return sobrenome;
-				}
-
-				@Override
-				public Endereco getEndereco(){
-					return endereco1;
-				}
-
-				@Override
-				public String getRg() {
-					return rg;
-				}
-
-				@Override
-				public Date getDataDeAlta(){
-					return dataDeAlta;
-				}
-			};
-
-			Gson gson = new Gson();
-			String json = gson.toJson(paciente1);
-
-
-			mockMvc.perform(MockMvcRequestBuilders.post("/pacientes")
-							.contentType(APPLICATION_JSON)
-							.content(json)
-							.characterEncoding("utf-8"))
-					.andDo(MockMvcResultHandlers.print())
-					.andExpect(MockMvcResultMatchers.status().isOk())
-					.andReturn();
-	}
-
-	@Test
-	public void testBuscaPacientePeloId() throws Exception{
-		mockMvc.perform(MockMvcRequestBuilders.get("/pacientes/{id}",  "1")
-				.accept(APPLICATION_JSON))
-				.andDo(MockMvcResultHandlers.print())
-				.andExpect(status().isOk())
-				.andExpect(content().contentType(APPLICATION_JSON));
-		}
-
-	@Test
-	public void testListarConsultas() throws Exception{
-		mockMvc.perform(MockMvcRequestBuilders.get("/consultas")
-				.accept(APPLICATION_JSON))
-				.andDo(MockMvcResultHandlers.print())
-				.andExpect(status().isOk())
-				.andExpect(content().contentType(APPLICATION_JSON));
-	}
-
-
-
-
+    @ExceptionHandler({BadRequestException.class})
+    public ResponseEntity<String> processErrorBadRequest(BadRequestException ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
 }
