@@ -1,71 +1,143 @@
-package com.example.sistemaDeReservasDeConsultas.controller;
-import com.example.sistemaDeReservasDeConsultas.exceptions.BadRequestException;
-import com.example.sistemaDeReservasDeConsultas.exceptions.ResourceNotFoundException;
+package com.example.sistemaDeReservasDeConsultas;
+
+import com.example.sistemaDeReservasDeConsultas.controller.PacienteController;
+import com.example.sistemaDeReservasDeConsultas.model.Endereco;
 import com.example.sistemaDeReservasDeConsultas.model.Paciente;
+import com.example.sistemaDeReservasDeConsultas.repository.IPacienteRepository;
 import com.example.sistemaDeReservasDeConsultas.service.PacienteService;
-
-import org.springframework.http.HttpStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.google.gson.Gson;
+import org.junit.Before;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.List;
+import javax.persistence.Id;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 
-@RestController
-@RequestMapping(value = "/pacientes", method = RequestMethod.GET,
-        produces = {MediaType.APPLICATION_JSON_VALUE}
-)
+import static org.mockito.MockitoAnnotations.initMocks;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-public class PacienteController {
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@AutoConfigureMockMvc(addFilters = false)
 
-    private final PacienteService service;
+//@WebMvcTest(PacienteController.class)
 
-    public PacienteController(PacienteService service) { this.service = service; }
+ class SistemaDeReservasDeConsultasApplicationTests {
 
-    @PostMapping
-    public ResponseEntity<Paciente> cadastrarPaciente(@RequestBody Paciente paciente) throws BadRequestException {
-        try {
-            return ResponseEntity.ok(service.add(paciente));
-        } catch (Exception e) {
-            throw new BadRequestException("Os dados da solicitação não correspondem aos necessários para o cadastro.");
-        }
-    }
+	@Autowired
+	private MockMvc mockMvc;
 
-    @GetMapping
-    public List<Paciente> buscarTodos() {
-        return service.getAll();
-    }
+	@MockBean
+	private PacienteService pacienteService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Paciente> buscaPacienteId(@PathVariable Long id) throws ResourceNotFoundException {
-        try {
-            return ResponseEntity.ok(service.getById(id));
-        } catch (Exception e) {
-            throw new ResourceNotFoundException("Não foi encontrado o paciente buscado com id: " + id);
-        }
-    }
+	@JsonFormat(pattern = "dd/MM/yyyy")
 
-    @PutMapping("/atualizar")
-    public ResponseEntity<Paciente> alterarPaciente(@RequestBody Paciente paciente) throws BadRequestException {
-        try {
-            return ResponseEntity.ok(service.update(paciente));
-        } catch (Exception e) {
-            throw new BadRequestException("Não foi possível atualizar os dados do paciente com os dados desta requisição");
-        }
-    }
+	@Before
+	public void setUp() throws Exception{
+		MockitoAnnotations.openMocks(this);
+		PacienteController controller = new PacienteController(pacienteService);
+		mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+	}
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> excluirPaciente(@PathVariable Long id) throws ResourceNotFoundException {
-        try {
-            service.remove(id);
-            return ResponseEntity.ok("Paciente excluído.");
-        } catch (Exception e) {
-            throw new ResourceNotFoundException("Não foi possível excluir o paciente de id: " + id);
-        }
-    }
 
-    @ExceptionHandler({BadRequestException.class})
-    public ResponseEntity<String> processErrorBadRequest(BadRequestException ex){
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-    }
+
+
+	@Test
+	public void cadastrarPaciente () throws Exception {
+
+		Paciente paciente1 = new Paciente();
+		paciente1.setId(1L);
+		paciente1.setNome("Daniel");
+		paciente1.setSobrenome("Fontoura");
+		paciente1.setEndereco(null);
+		paciente1.setRg("12345678-9");
+		paciente1.setDataDeAlta(null);
+
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+		ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+		String requestJson = ow.writeValueAsString(paciente1);
+
+		Mockito.when(pacienteService.add(Mockito.any(Paciente.class))).thenReturn(paciente1);
+
+		mockMvc.perform(MockMvcRequestBuilders.post("/pacientes")
+					.content(requestJson)
+					.contentType("application/json")
+					.characterEncoding("utf-8"))
+					.andDo(MockMvcResultHandlers.print())
+					.andExpect(status().isOk())
+					.andExpect(content().contentType("application/json"))
+					.andExpect(jsonPath("$.nome").value("Daniel"))
+					.andExpect(jsonPath("$.sobrenome").value("Fontoura"));
+	}
+
+
+	@Test
+	public void testBuscaPacientePeloId() throws Exception{
+
+		Paciente paciente2 = new Paciente();
+		paciente2.setId(2L);
+		paciente2.setNome("Dani");
+		paciente2.setSobrenome("Sciacco");
+		paciente2.setEndereco(null);
+		paciente2.setRg("98765432-1");
+		paciente2.setDataDeAlta(null);
+
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+		ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+		String requestJson2 = ow.writeValueAsString(paciente2);
+
+		Mockito.when(pacienteService.add(Mockito.any(Paciente.class))).thenReturn(paciente2);
+
+		mockMvc.perform(MockMvcRequestBuilders.post("/pacientes")
+				.content(requestJson2)
+				.contentType("application/json")
+				.characterEncoding("utf-8"))
+				.andDo(MockMvcResultHandlers.print())
+				.andExpect(status().isOk())
+				.andExpect(content().contentType("application/json"));
+
+		mockMvc.perform(MockMvcRequestBuilders.get("/pacientes/{id}",  "2")
+				.contentType("application/json")
+				.characterEncoding("utf-8"))
+				.andDo(MockMvcResultHandlers.print())
+				.andExpect(status().isOk())
+				.andExpect(content().contentType("application/json"));
+	}
+
+	@Test
+	public void testListarConsultas() throws Exception{
+		mockMvc.perform(MockMvcRequestBuilders.get("/consultas")
+				.contentType(APPLICATION_JSON).accept(APPLICATION_JSON)
+				.characterEncoding("utf-8"))
+				.andDo(MockMvcResultHandlers.print())
+				.andExpect(status().isOk())
+				.andExpect(content().contentType("application/json"));
+	}
+
+
+
+
 }
