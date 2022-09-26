@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/pacientes")
+@RequestMapping(value = "/pacientes", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+
 public class PacienteController {
 
     private final PacienteService service;
