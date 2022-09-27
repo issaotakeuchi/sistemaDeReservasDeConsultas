@@ -7,13 +7,14 @@ import com.example.sistemaDeReservasDeConsultas.service.PacienteService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/pacientes", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(value = "/pacientes")
 
 public class PacienteController {
 
@@ -50,7 +51,7 @@ public class PacienteController {
         }
     }
 
-    @PutMapping("/atualizar")
+    @PutMapping
     public ResponseEntity<Paciente> alterarPaciente(@RequestBody Paciente paciente) throws BadRequestException {
         try {
             service.getById(paciente.getId());
