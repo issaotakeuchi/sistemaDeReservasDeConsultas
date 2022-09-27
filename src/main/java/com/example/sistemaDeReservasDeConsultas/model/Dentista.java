@@ -21,4 +21,11 @@ public class Dentista {
     @OneToMany(mappedBy = "dentista", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Consulta> consultas = new ArrayList<>();
+
+    public Dentista(Long id, String nome, String sobrenome, String matriculaCadastro) {
+        this.id = id;
+        this.nome = nome;
+        this.sobrenome = sobrenome;
+        this.matriculaCadastro = matriculaCadastro;
+    }
 }

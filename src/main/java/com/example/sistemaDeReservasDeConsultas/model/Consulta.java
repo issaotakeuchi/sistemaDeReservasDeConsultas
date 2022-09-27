@@ -11,7 +11,6 @@ import java.util.Date;
 
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "Consulta")
@@ -27,4 +26,11 @@ public class Consulta {
     private Dentista dentista;
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm", timezone =  "Brazil/East")
     private Date dataEHoraConsulta;
+
+    public Consulta(Long id, Paciente paciente, Dentista dentista, Date dataEHoraConsulta) {
+        this.id = id;
+        this.paciente = paciente;
+        this.dentista = dentista;
+        this.dataEHoraConsulta = dataEHoraConsulta;
+    }
 }

@@ -30,5 +30,13 @@ public class Paciente {
     @OneToMany(mappedBy = "paciente", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Consulta> consultas = new ArrayList<>();
-    
+
+    public Paciente(Long id, String nome, String sobrenome, Endereco endereco, String rg, Date dataDeAlta) {
+        this.id = id;
+        this.nome = nome;
+        this.sobrenome = sobrenome;
+        this.endereco = endereco;
+        this.rg = rg;
+        this.dataDeAlta = dataDeAlta;
+    }
 }
