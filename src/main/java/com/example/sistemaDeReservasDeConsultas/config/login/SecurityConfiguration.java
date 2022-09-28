@@ -18,6 +18,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 //@EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+    private static final String[] SWAGGER_WHITELIST = {
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-ui.html",
+    };
     @Autowired
     private UsuarioService service;
     @Autowired
@@ -34,6 +39,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception{
         http
                 .csrf().disable().authorizeRequests()
+                .antMatchers(SWAGGER_WHITELIST).permitAll()
                 .antMatchers("/consultas/**").hasAnyAuthority(UsuarioRoles.ROLE_ADMIN.name(), UsuarioRoles.ROLE_USER.name())
                 .antMatchers("/dentistas/**", "/pacientes/**").hasAnyAuthority(UsuarioRoles.ROLE_ADMIN.name())
                 .antMatchers("/authenticate").permitAll().anyRequest().authenticated()
